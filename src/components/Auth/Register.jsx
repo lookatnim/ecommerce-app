@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -14,7 +15,14 @@ const validationSchema = Yup.object({
 });
 
 const Register = () => {
-  const { register } = useAuth();
+  const { register, isAuth } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(isAuth() === 'true'){
+      navigate('/');
+    }
+  }, []);
 
   return (
     <Box

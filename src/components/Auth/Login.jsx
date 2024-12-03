@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box, Typography } from '@mui/material';
 import { SuccessToast } from '../Tost/Popup';
+import { useNavigate } from 'react-router-dom';
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -12,7 +13,14 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login , isAuth} = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(isAuth() === 'true'){
+      navigate('/');
+    }
+  }, []);
 
   return (
     <Box

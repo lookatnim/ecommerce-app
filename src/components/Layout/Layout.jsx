@@ -16,15 +16,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../../assets/logo.png"; // Update with your logo path
 import { useAuth } from "../../context/AuthContext";
-
-// Mock product list for search suggestions (replace with actual API fetch)
-const productList = [
-  { label: "iPhone 14", id: 1 },
-  { label: "MacBook Pro", id: 2 },
-  { label: "Apple Watch", id: 3 },
-  { label: "AirPods Pro", id: 4 },
-  { label: "iPad Pro", id: 5 },
-];
+import { products } from "../Products/ProductData";
+import ProductSearch from "../Products/ProductSearch";
 
 const Layout = () => {
   const location = useLocation();
@@ -68,21 +61,7 @@ const Layout = () => {
           </Box>
 
           {/* Search Bar */}
-          <Autocomplete
-            options={productList}
-            getOptionLabel={(option) => option.label}
-            sx={{ width: 300 }}
-            onChange={handleSearch}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search Products"
-                variant="outlined"
-                size="small"
-                sx={{ bgcolor: "white", borderRadius: 1 }}
-              />
-            )}
-          />
+          <ProductSearch handleSearch={handleSearch} />
 
           {/* Navigation Links */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 8 }}>
@@ -95,17 +74,24 @@ const Layout = () => {
             </Typography>
             <Typography
               component={Link}
-              to="/products"
-              sx={navLinkStyles(location.pathname === "/products")}
+              to="/iphone"
+              sx={navLinkStyles(location.pathname === "/iphone")}
             >
-              Products
+              Iphone
             </Typography>
             <Typography
               component={Link}
-              to="/about"
-              sx={navLinkStyles(location.pathname === "/about")}
+              to="/android"
+              sx={navLinkStyles(location.pathname === "/android")}
             >
-              About
+              Android
+            </Typography>
+            <Typography
+              component={Link}
+              to="/accessories"
+              sx={navLinkStyles(location.pathname === "/accessories")}
+            >
+              Accessories
             </Typography>
           </Box>
 
