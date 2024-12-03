@@ -8,12 +8,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const login = (email) => {
-    setUser({ email })
-    localStorage.setItem('email', email);
-    localStorage.setItem('isAuth', true);
-    SuccessToast('Login successful!')
-    navigate('/');
+  const login = (email, password) => {
+    if (!email || !password) {
+      WarningToast('Please enter email and password');
+    }else if(email === 'user@test.com' && password === 'password') {
+      setUser({ email })
+      localStorage.setItem('email', email);
+      localStorage.setItem('isAuth', true);
+      SuccessToast('Login successful!')
+      navigate('/');
+    }else{
+      WarningToast('Invalid email or password');
+    }
   };
   const register = (email) => {
     setUser({ email })
