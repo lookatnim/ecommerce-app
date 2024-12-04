@@ -7,8 +7,9 @@ const ProductSearch = ({ handleSearch }) => {
 
   return (
     <Autocomplete
+      id="product-search"
       options={products}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option) => `${option.name} - ${option.price}` }
       filterOptions={(options, { inputValue }) => {
         return options.filter((option) => {
           const lowercasedInput = inputValue.toLowerCase();
@@ -43,7 +44,7 @@ const ProductSearch = ({ handleSearch }) => {
           key={option.id} // Ensure each option has a unique key
           component="li"
           sx={{ display: "flex", alignItems: "center", gap: 2, py: 1 }}
-          {...props} // Spread remaining props, excluding the key
+          // {...props} // Spread remaining props, excluding the key
         >
           <img
             src={option.image}

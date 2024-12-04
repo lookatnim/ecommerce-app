@@ -5,10 +5,13 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Avatar,
+  Drawer,
   Menu,
   MenuItem,
-  TextField,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -18,15 +21,21 @@ import logo from "../../assets/logo.png"; // Update with your logo path
 import { useAuth } from "../../context/AuthContext";
 import { products } from "../Products/ProductData";
 import ProductSearch from "../Products/ProductSearch";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate(); // For navigating to the selected product
   const [anchorEl, setAnchorEl] = useState(null);
   const { isAuth, logout } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleToggleMenu = () => {
+    setMobileOpen(!mobileOpen);
   };
 
   const handleProfileMenuClose = () => {
@@ -39,6 +48,13 @@ const Layout = () => {
     }
   };
 
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/iphone", label: "Iphone" },
+    { to: "/android", label: "Android" },
+    { to: "/accessories", label: "Accessories" },
+  ];
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Header */}
@@ -47,6 +63,16 @@ const Layout = () => {
         sx={{ bgcolor: "background.header", boxShadow: "auto" }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          {/* mobile menu */}
+          <IconButton
+            edge="start"
+            color="inherit"
+            area-lable="menu"
+            sx={{ display: { xs: "block", md: "none" } }}
+            onClick={handleToggleMenu}
+          >
+            <MenuIcon />
+          </IconButton>
           {/* Logo */}
           <Box display="flex" alignItems="center">
             <IconButton
@@ -65,34 +91,16 @@ const Layout = () => {
 
           {/* Navigation Links */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 8 }}>
-            <Typography
-              component={Link}
-              to="/"
-              sx={navLinkStyles(location.pathname === "/")}
-            >
-              Home
-            </Typography>
-            <Typography
-              component={Link}
-              to="/iphone"
-              sx={navLinkStyles(location.pathname === "/iphone")}
-            >
-              Iphone
-            </Typography>
-            <Typography
-              component={Link}
-              to="/android"
-              sx={navLinkStyles(location.pathname === "/android")}
-            >
-              Android
-            </Typography>
-            <Typography
-              component={Link}
-              to="/accessories"
-              sx={navLinkStyles(location.pathname === "/accessories")}
-            >
-              Accessories
-            </Typography>
+            {navLinks.map((link) => (
+              <Typography
+                key={link.label}
+                component={Link}
+                to={link.to}
+                sx={navLinkStyles(location.pathname === link.to)}
+              >
+                {link.label}
+              </Typography>
+            ))}
           </Box>
 
           {/* User Actions */}
@@ -131,6 +139,40 @@ const Layout = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Mobile Menu */}
+      <Box
+        component="nav"
+        sx={{ display: { xs: "block", md: "none" } }}
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleToggleMenu}
+          sx={{ "& .MuiDrawer-paper": { width: 250 } }}
+        >
+          <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={handleToggleMenu}
+            onKeyDown={handleToggleMenu}
+          >
+            <List>
+              {navLinks.map((link) => (
+                <ListItem key={link.label} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    to={link.to}
+                    sx={navLinkStyles(location.pathname === link.to)}
+                  >
+                    <ListItemText primary={link.label} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Drawer>
+      </Box>
 
       {/* Main Content */}
       <Box

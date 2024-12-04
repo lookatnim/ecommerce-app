@@ -7,7 +7,7 @@ import { products } from './ProductData';
 const ProductCategory = () => {
   // Use URL parameter to get the category
   const  category  = window.location.pathname.slice(1) 
-  console.log(window.location.pathname.slice(1));
+  // console.log(window.location.pathname.slice(1));
 
   // Filter products based on the category from URL
   const filteredProducts = products.filter((product) => product.category === category);
